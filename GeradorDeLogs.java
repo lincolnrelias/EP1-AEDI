@@ -11,39 +11,42 @@ public class GeradorDeLogs {
 
   public static void main(final String[] args) throws IOException {
     final Scanner entrada = new Scanner(System.in);
+    Estruturas struct=new PilhaArranjo();
+    String structTypeNumber = "";
     // Coloquei tudo num while para o teste ser mais fácil
     while (true) {
       System.out.println(
           "Digite o caminho do arquivo/diretorio a ser processado.(0 para sair do programa|1 para mudar estrutura)");
       // Recebe o nome do arquivo/diretorio a ser lido
-      final String filePath = entrada.next();
-      int structTypeNumber = 0;
-      Estruturas struct;
-      if (filePath.equals("0")) {// se for 0 fecha o programa
+      final String input = entrada.next();
+      
+      if (input.equals("0")) {// se for 0 fecha o programa
         break;
-      } else if (filePath.equals("1")) {
-        System.out.println("Escolha o tipo de estrutura(Padrao e Pilha Arranjo):");
+      } else if (input.equals("1")) {
+        System.out.println("Escolha o tipo de estrutura(Atual e : "+struct.getClass().getName()+")");
         System.out.println("1-Pilha Ingenua");
         System.out.println("2-Lista Ligada");
         System.out.println("3-Pilha Arranjo");
-        structTypeNumber = entrada.nextInt();
+        structTypeNumber = entrada.next();
       }
       switch (structTypeNumber) {//Define o tipo de estrutura a ser usada
-        case 1:
+        case "1":
           struct = new PilhaIngenua();
-        case 2:
+          break;
+        case "2":
           struct = new ListaLigada();
+          break;
         default:
           struct = new PilhaArranjo();
-
       }
-      final File dir = new File(filePath);// Cria uma instância de file para uso posterior
+      if(!input.equals("1")){
+       final File dir = new File(input);// Cria uma instância de file para uso posterior
       final File[] directoryListing = dir.listFiles();// retorna um array com um arquivo de teste em cada posição
       long timeElapsed = 0;// variável usada para medir o tempo quando se itera por arquivos de um
                            // diretório
       long startTime = System.currentTimeMillis();// inicia o contador
       if (dir.isFile()) {// se foi passado um arquivo em vez de um diretório
-        final String resultString = ReadFile(filePath, struct);// passa-se o caminho do arquivo e a estrutura a se
+        final String resultString = ReadFile(input, struct);// passa-se o caminho do arquivo e a estrutura a se
                                                          // utilizar(ListaLigada,PilhaIngenua,PilhaArranjo)
         // Se tiver erro de arquivo não encontrado, favor criar a pasta ArquivosSaida
         // na mesma pasta do programa
@@ -52,7 +55,7 @@ public class GeradorDeLogs {
               "ArquivosSaida/" + dir.getName().substring(0, dir.getName().length() - 4) + "Saida.txt");
           writer.write(resultString);
           writer.close();
-          System.out.println("o arquivo " + filePath.substring(0, filePath.length() - 4) + "Saida.txt"
+          System.out.println("o arquivo " + input.substring(0, input.length() - 4) + "Saida.txt"
               + " foi criado em ArquivosSaida");
         } catch (final IOException e) {
           System.out.println("Arquivo nao encontrado:" + e);
@@ -63,7 +66,7 @@ public class GeradorDeLogs {
           startTime = System.currentTimeMillis();
           // armazena o tempo atual logo antes do método principal ser chamado
           // result String recebe a string a ser escrita no arquivo de saída
-          final String filePathFormated = filePath + "/" + child.getName();
+          final String filePathFormated = input + "/" + child.getName();
           Estruturas childStruct;
           try {
             childStruct = struct.getClass().getDeclaredConstructor().newInstance();//Cria uma nova estrutura de entrada para cada arquivo dentro da pasta
@@ -72,6 +75,7 @@ public class GeradorDeLogs {
             e1.printStackTrace();
             childStruct = new PilhaArranjo();
           }
+
           final String resultString = ReadFile(filePathFormated, childStruct);
           Path path = Path.of("ArquivosSaida");
           if(Files.notExists(path)){// Se não existe o diretório ArquivosSaida na pasta do projeto
@@ -88,9 +92,13 @@ public class GeradorDeLogs {
             System.out.println("Arquivo nao encontrado:" + e);
           }
           timeElapsed += (System.currentTimeMillis() - startTime);//Adiciona o tempo de processamento deste arquivo ao dos outros arquivos
+          System.out.println(System.currentTimeMillis() - startTime);
         }
         System.out.println(timeElapsed);//printa tempo total de processamento
       }
+      }
+      
+      
     }
   }
 
