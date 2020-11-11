@@ -16,7 +16,7 @@ public class GeradorDeLogs {
     // Coloquei tudo num while para o teste ser mais fácil
     while (true) {
       System.out.println(
-          "Digite o caminho do arquivo/diretorio a ser processado.(0 para sair do programa|1 para mudar estrutura)");
+          " Digite o caminho do arquivo/diretorio a ser processado.(0 para sair do programa|1 para mudar estrutura)");
       // Recebe o nome do arquivo/diretorio a ser lido
       final String input = entrada.next();
       
@@ -27,6 +27,8 @@ public class GeradorDeLogs {
         System.out.println("1-Pilha Ingenua");
         System.out.println("2-Lista Ligada");
         System.out.println("3-Pilha Arranjo");
+        System.out.println("4-Pilha Dinamica +8");
+        System.out.println("5-Pilha Dinamica *2");
         structTypeNumber = entrada.next();
       }
       switch (structTypeNumber) {//Define o tipo de estrutura a ser usada
@@ -36,6 +38,12 @@ public class GeradorDeLogs {
         case "2":
           struct = new ListaLigada();
           break;
+        case "4":
+          struct = new PilhaDinamicaSoma();
+          break;
+        case "5":
+        struct = new PilhaDinamicaDobra();
+        break;
         default:
           struct = new PilhaArranjo();
       }
@@ -98,7 +106,7 @@ public class GeradorDeLogs {
       }
       }
       
-      
+      System.out.print(struct.getClass().getName());
     }
   }
 
