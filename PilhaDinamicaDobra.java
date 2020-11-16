@@ -12,6 +12,7 @@ public class PilhaDinamicaDobra implements Estruturas {
     
     public void add (int newElement){
     if(size==capacity){
+        //só mudei +8 por *2
     capacity=capacity*2;
     Integer[] tmp = new Integer[capacity];
     for (int j=0;j<size;j++)

@@ -26,6 +26,7 @@ int tmp = pilha[size-1];
 size--;
 return tmp;
 }
+//coloquei um método para retornar a pilha em forma de string
 public String formated(){
     
     String format="";
